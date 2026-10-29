@@ -23,6 +23,13 @@
             <label for="filtro-modelos">Filtrar modelos pelo nome:</label>
             <input type="search" id="filtro-modelos" placeholder="Ex.: Corolla" autocomplete="off">
         </section>
+        <section class="ordenacao-modelos">
+            <label for="ordenar-modelos">Ordenar resultados:</label>
+            <select id="ordenar-modelos">
+                <option value="nome">Nome (A–Z)</option>
+                <option value="mais-versoes">Mais versões primeiro</option>
+            </select>
+        </section>
         <section id="resultado" aria-live="polite">
             <div class="mensagem-inicial"><span>🚘</span><p>Escolha uma marca para conhecer seus modelos.</p></div>
         </section>

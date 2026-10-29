@@ -1,4 +1,4 @@
-import { normalizar, escaparHTML, idFavorito, filtrarModelos } from "./utils.js";
+import { normalizar, escaparHTML, idFavorito, filtrarModelos, ordenarModelos } from "./utils.js";
 
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
@@ -40,6 +40,7 @@ const db = getFirestore(app);
 const selectMarca = document.getElementById("marca");
 const botaoBuscar = document.getElementById("botao-buscar");
 const campoFiltro = document.getElementById("filtro-modelos");
+const selectOrdenacao = document.getElementById("ordenar-modelos");
 const areaResultado = document.getElementById("resultado");
 const listaFavoritos = document.getElementById("favoritos-lista");
 const statusFavoritos = document.getElementById("status-favoritos");
@@ -380,6 +381,8 @@ async function alternarFavorito(indice, botao) {
 function exibirModelos() {
     const indicesVisiveis = modelosAtuais.map((modelo, indice) => ({ modelo, indice }))
         .filter(({ modelo }) => filtrarModelos([modelo], campoFiltro.value).length > 0);
+    const modelosOrdenados = ordenarModelos(indicesVisiveis.map(x => x.modelo), selectOrdenacao.value);
+    const indicesOrdenados = modelosOrdenados.map(modelo => indicesVisiveis.find(x => x.modelo === modelo));
 
     let html = `
         <div class="cabecalho-resultados">
@@ -390,7 +393,7 @@ function exibirModelos() {
         <div class="lista-modelos">
     `;
 
-    indicesVisiveis.forEach(({ modelo, indice }) => {
+    indicesOrdenados.forEach(({ modelo, indice }) => {
         const salvo = favoritos.has(
             idFavorito(marcaAtual, modelo.nome)
         );
@@ -982,6 +985,10 @@ botaoBuscar.addEventListener(
 );
 
 campoFiltro.addEventListener("input", () => {
+    if (modelosAtuais.length) exibirModelos();
+});
+
+selectOrdenacao.addEventListener("change", () => {
     if (modelosAtuais.length) exibirModelos();
 });
 
