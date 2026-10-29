@@ -40,4 +40,15 @@ export function ordenarModelos(modelos, criterio = "nome") {
     return copia.sort((a, b) =>
         a.nome.localeCompare(b.nome, "pt-BR")
     );
+
+}
+
+export function pesquisarFavoritos(itens, termo) {
+    const busca = normalizar(termo);
+
+    return itens.filter(item =>
+        normalizar(
+            `${item.marca} ${item.modelo}`
+        ).includes(busca)
+    );
 }

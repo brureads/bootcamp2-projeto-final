@@ -1,4 +1,4 @@
-import { normalizar, escaparHTML, idFavorito, filtrarModelos, ordenarModelos } from "./utils.js";
+import { normalizar, escaparHTML, idFavorito, filtrarModelos, ordenarModelos, pesquisarFavoritos } from "./utils.js";
 
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
@@ -44,6 +44,7 @@ const selectOrdenacao = document.getElementById("ordenar-modelos");
 const areaResultado = document.getElementById("resultado");
 const listaFavoritos = document.getElementById("favoritos-lista");
 const statusFavoritos = document.getElementById("status-favoritos");
+const campoPesquisaFavoritos = document.getElementById("pesquisa-favoritos");
 
 let usuarioAtual = null;
 let favoritos = new Map();
@@ -315,12 +316,17 @@ function mostrarFavoritos() {
         return;
     }
 
-    const itens = [...favoritos.values()].sort((a, b) =>
+    const itens = pesquisarFavoritos([...favoritos.values()], campoPesquisaFavoritos.value).sort((a, b) =>
         `${a.marca} ${a.modelo}`.localeCompare(
             `${b.marca} ${b.modelo}`,
             "pt-BR"
         )
     );
+
+    if (itens.length === 0) {
+        listaFavoritos.innerHTML = `<p class="vazio-favoritos">Nenhum favorito corresponde à pesquisa.</p>`;
+        return;
+    }
 
     listaFavoritos.innerHTML = itens.map(item => `
         <div class="item-favorito">
@@ -991,5 +997,7 @@ campoFiltro.addEventListener("input", () => {
 selectOrdenacao.addEventListener("change", () => {
     if (modelosAtuais.length) exibirModelos();
 });
+
+campoPesquisaFavoritos.addEventListener("input", mostrarFavoritos);
 
 carregarMarcas();
