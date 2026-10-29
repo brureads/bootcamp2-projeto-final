@@ -26,3 +26,18 @@ export function filtrarModelos(modelos, termo) {
     const busca = normalizar(termo);
     return modelos.filter(modelo => normalizar(modelo.nome).includes(busca));
 }
+
+export function ordenarModelos(modelos, criterio = "nome") {
+    const copia = [...modelos];
+
+    if (criterio === "mais-versoes") {
+        return copia.sort((a, b) =>
+            b.versoes.length - a.versoes.length ||
+            a.nome.localeCompare(b.nome, "pt-BR")
+        );
+    }
+
+    return copia.sort((a, b) =>
+        a.nome.localeCompare(b.nome, "pt-BR")
+    );
+}

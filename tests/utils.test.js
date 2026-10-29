@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { normalizar, escaparHTML, idFavorito } from "../utils.js";
+import { ordenarModelos } from "../utils.js";
 
 test("normaliza marca com acentos e pontuacao", () => {
     assert.equal(normalizar("  Citroën!  "), "citroen");
@@ -36,4 +37,29 @@ test("filtra os modelos por trecho do nome", () => {
 
 test("pesquisa de modelos ignora acentos", () => {
     assert.equal(filtrarModelos([{ nome: "Série 3" }], "serie").length, 1);
+});
+
+test("ordena modelos alfabeticamente", () => {
+    const dados = [
+        { nome: "Z", versoes: [] },
+        { nome: "A", versoes: [] }
+    ];
+
+    assert.deepEqual(
+        ordenarModelos(dados).map(x => x.nome),
+        ["A", "Z"]
+    );
+});
+
+test("ordena por quantidade de versoes", () => {
+    const dados = [
+        { nome: "A", versoes: [1] },
+        { nome: "B", versoes: [1, 2] }
+    ];
+
+    assert.deepEqual(
+        ordenarModelos(dados, "mais-versoes")
+            .map(x => x.nome),
+        ["B", "A"]
+    );
 });
