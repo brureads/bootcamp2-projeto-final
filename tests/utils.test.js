@@ -1,3 +1,5 @@
+
+import { pesquisarFavoritos } from "../utils.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { normalizar, escaparHTML, idFavorito } from "../utils.js";
@@ -61,5 +63,28 @@ test("ordena por quantidade de versoes", () => {
         ordenarModelos(dados, "mais-versoes")
             .map(x => x.nome),
         ["B", "A"]
+    );
+});
+
+test("pesquisa favoritos por marca", () => {
+    const itens = [
+        { marca: "Fiat", modelo: "Argo" },
+        { marca: "Honda", modelo: "Civic" }
+    ];
+
+    assert.deepEqual(
+        pesquisarFavoritos(itens, "fiat"),
+        [itens[0]]
+    );
+});
+
+test("pesquisa favoritos por modelo ignorando acento", () => {
+    const itens = [
+        { marca: "BMW", modelo: "Série 3" }
+    ];
+
+    assert.equal(
+        pesquisarFavoritos(itens, "serie").length,
+        1
     );
 });
