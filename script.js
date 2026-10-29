@@ -1,3 +1,5 @@
+import { normalizar, escaparHTML, idFavorito, filtrarModelos } from "./utils.js";
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 
@@ -37,6 +39,7 @@ const db = getFirestore(app);
 
 const selectMarca = document.getElementById("marca");
 const botaoBuscar = document.getElementById("botao-buscar");
+const campoFiltro = document.getElementById("filtro-modelos");
 const areaResultado = document.getElementById("resultado");
 const listaFavoritos = document.getElementById("favoritos-lista");
 const statusFavoritos = document.getElementById("status-favoritos");
@@ -108,24 +111,6 @@ const nomesMarcasAPI = {
 };
 
 // FUNCOES AUXILIARES
-
-function normalizar(texto) {
-    return String(texto ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, " ")
-        .trim();
-}
-
-function escaparHTML(texto) {
-    return String(texto ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
 
 async function obterJSON(url) {
     const resposta = await fetch(url);
@@ -287,12 +272,6 @@ async function buscarModelos() {
 
 // FAVORITOS FIREBASE
 
-function idFavorito(marca, modelo) {
-    return encodeURIComponent(
-        `${normalizar(marca)}_${normalizar(modelo)}`
-    );
-}
-
 function referenciaFavorito(marca, modelo) {
     return doc(
         db,
@@ -399,16 +378,19 @@ async function alternarFavorito(indice, botao) {
 // EXIBICAO DOS CARROS
 
 function exibirModelos() {
+    const indicesVisiveis = modelosAtuais.map((modelo, indice) => ({ modelo, indice }))
+        .filter(({ modelo }) => filtrarModelos([modelo], campoFiltro.value).length > 0);
+
     let html = `
         <div class="cabecalho-resultados">
             <h2>${escaparHTML(marcaAtual)}</h2>
-            <p>${modelosAtuais.length} modelos encontrados</p>
+            <p>${indicesVisiveis.length} de ${modelosAtuais.length} modelos exibidos</p>
         </div>
 
         <div class="lista-modelos">
     `;
 
-    modelosAtuais.forEach((modelo, indice) => {
+    indicesVisiveis.forEach(({ modelo, indice }) => {
         const salvo = favoritos.has(
             idFavorito(marcaAtual, modelo.nome)
         );
@@ -998,5 +980,9 @@ botaoBuscar.addEventListener(
     "click",
     buscarModelos
 );
+
+campoFiltro.addEventListener("input", () => {
+    if (modelosAtuais.length) exibirModelos();
+});
 
 carregarMarcas();
