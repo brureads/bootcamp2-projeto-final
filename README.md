@@ -1,12 +1,24 @@
 
 # Garagem Digital
 
-## Autor
 
-**Bruna Martins Moura**  
-Matrícula: 22650015  
-Instituição: CEUB  
-Disciplina: Bootcamp II
+## Equipe — Etapa 03
+
+Disciplina: Bootcamp II  
+Instituição: CEUB
+
+| Integrante | Matrícula | GitHub | Responsabilidade | Principal PR |
+|---|---|---|---|---|
+| Bruna Martins Moura | 22650015 | @brureads | Busca de veículos e integração com APIs | Pendente |
+| Mariana Oliveira Mazali| 22552647 | @Mah-zali | Filtros e organização dos resultados | Pendente |
+| Damylle Souza Oliveira| 22553445 | @damyllee | Validações e favoritos | Pendente |
+
+Cada integrante será responsável por desenvolver código
+em uma branch própria, abrir uma Pull Request e
+participar da revisão de código de outra integrante.
+
+Testes automatizados, CI, Docker e documentação serão
+responsabilidades compartilhadas pelo grupo.
 
 ## 1. Descrição do projeto
 
