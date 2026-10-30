@@ -9,9 +9,10 @@ Instituição: CEUB
 
 | Integrante | Matrícula | GitHub | Responsabilidade | Principal PR |
 |---|---|---|---|---|
-| Bruna Martins Moura | 22650015 | @brureads | Busca de veículos e integração com APIs | Pendente |
-| Mariana Oliveira Mazali| 22552647 | @Mah-zali | Filtros e organização dos resultados | Pendente |
-| Damylle Souza Oliveira| 22553445 | @damyllee | Validações e favoritos | Pendente |
+| Mariana Oliveira Mazali | 22552647 | [@Mah-zali](https://github.com/Mah-zali) | Filtro de modelos, testes e GitHub Actions | [PR #1](https://github.com/brureads/bootcamp2-projeto-final/pull/1) |
+| Bruna Martins Moura | 22650015 | [@brureads](https://github.com/brureads) | Ordenação de veículos e resolução de conflitos | [PR #2](https://github.com/brureads/bootcamp2-projeto-final/pull/2) |
+| Damylle Souza Oliveira | 22553445 | [@damyllee](https://github.com/damyllee) | Pesquisa de favoritos por marca e modelo | [PR #3](https://github.com/brureads/bootcamp2-projeto-final/pull/3) |
+
 
 Cada integrante será responsável por desenvolver código
 em uma branch própria, abrir uma Pull Request e
@@ -45,6 +46,9 @@ A aplicação permite que o usuário organize seus veículos favoritos, mantendo
 - Autenticação anônima com Firebase Authentication.
 - Interface responsiva.
 - Execução da aplicação em containers Docker.
+- Filtro de modelos por nome, ignorando acentos e diferenças entre maiúsculas e minúsculas.
+- Ordenação de modelos por nome ou quantidade de versões FIPE.
+- Pesquisa de veículos favoritos por marca e modelo.
 
 ## 3. Tecnologias utilizadas
 
@@ -328,7 +332,7 @@ Dessa forma, a orquestração permitiria gerenciar aplicações em maior escala,
 
 Clone o repositório:
 
-git clone https://github.com/brureads/garagem-digital.git
+git clone https://github.com/brureads/bootcamp2-projeto-final.git
 
 Entre na pasta do projeto.
 
@@ -365,7 +369,7 @@ O histórico de commits está disponível no GitHub.
 
 ### Repositório GitHub
 
-https://github.com/brureads/garagem-digital
+https://github.com/brureads/bootcamp2-projeto-final
 
 ### Aplicação GitHub Pages
 
@@ -396,3 +400,241 @@ Foram utilizadas diferentes tags de imagens Docker, além da execução simultâ
 O projeto também proporcionou experiência prática com versionamento Git, Docker Hub, documentação técnica e conceitos de Kubernetes.
 
 A aplicação mantém sua proposta original de oferecer uma interface simples, responsiva e organizada para explorar veículos.
+
+# Etapa 03 — Desenvolvimento Colaborativo
+
+## 16. Objetivo da etapa
+
+A Etapa 03 teve como objetivo implementar um fluxo profissional
+de desenvolvimento colaborativo, com branches individuais,
+Pull Requests, revisão de código, testes automatizados,
+integração contínua e publicação no Docker Hub.
+
+O projeto Garagem Digital foi aprimorado pelas integrantes
+Mariana Oliveira Mazali, Bruna Martins Moura e Damylle Souza Oliveira.
+
+## 17. Funcionalidades desenvolvidas pela equipe
+
+### Mariana — Filtro de modelos e testes
+
+Foi desenvolvido um filtro que permite pesquisar modelos pelo nome,
+ignorando acentos e diferenças entre letras maiúsculas e minúsculas.
+
+Também foram implementados testes automatizados e configurado
+o workflow de integração contínua no GitHub Actions.
+
+PR: https://github.com/brureads/bootcamp2-projeto-final/pull/1
+
+### Bruna — Ordenação de veículos
+
+Foi implementada a ordenação dos resultados por nome, em ordem
+alfabética, ou pela quantidade de versões disponíveis na FIPE.
+
+PR: https://github.com/brureads/bootcamp2-projeto-final/pull/2
+
+### Damylle — Pesquisa nos favoritos
+
+Foi implementada a pesquisa de veículos favoritos por marca
+e modelo, facilitando a localização dos veículos salvos.
+
+PR: https://github.com/brureads/bootcamp2-projeto-final/pull/3
+
+## 18. Testes automatizados
+
+A aplicação possui 12 testes automatizados utilizando
+o módulo nativo de testes do Node.js.
+
+Os testes verificam:
+
+- Normalização de textos e remoção de acentos.
+- Tratamento de valores nulos.
+- Escape de caracteres HTML.
+- Geração de identificadores de favoritos.
+- Filtragem de modelos por nome.
+- Pesquisa de modelos ignorando acentos.
+- Ordenação alfabética dos veículos.
+- Ordenação pela quantidade de versões.
+- Pesquisa de favoritos por marca.
+- Pesquisa de favoritos por modelo.
+
+### Como executar
+
+Com Node.js 20 ou superior instalado, execute na raiz
+do projeto:
+
+```bash
+npm test
+```
+
+No PowerShell, caso exista bloqueio de execução
+do npm.ps1, utilize:
+
+```powershell
+npm.cmd test
+```
+
+Resultado obtido localmente:
+
+- Testes executados: 12.
+- Testes aprovados: 12.
+- Falhas: 0.
+
+## 19. GitHub Actions e proteção da main
+
+O workflow de integração contínua está definido em:
+
+`.github/workflows/ci.yml`
+
+O GitHub Actions executa os testes automaticamente em
+Pull Requests destinadas à main e em pushes na main.
+
+A branch principal possui regras de proteção que exigem:
+
+- Pull Request antes do merge.
+- Pelo menos uma aprovação de outra integrante.
+- Execução bem-sucedida do check obrigatório de testes.
+
+O código somente pode ser integrado quando as condições
+obrigatórias são atendidas.
+
+## 20. Evidência — CI bloqueando uma Pull Request
+
+Para comprovar o funcionamento da integração contínua,
+foi criada uma Pull Request de demonstração:
+
+PR #4:
+https://github.com/brureads/bootcamp2-projeto-final/pull/4
+
+Branch utilizada: `teste/ci-bloqueado`
+
+Foi adicionado temporariamente um teste propositalmente
+incorreto:
+
+```javascript
+test("DEMONSTRACAO - CI deve bloquear a PR", () => {
+    assert.equal(1, 2);
+});
+```
+
+O GitHub Actions identificou a falha e apresentou:
+
+- All checks have failed.
+- CI - Testes / testes — Required.
+- Merging is blocked.
+
+### Evidência do bloqueio
+
+![Pull Request bloqueada pelo CI](evidencias/ci-bloqueado.png)
+
+Após registrar a evidência, o teste foi corrigido:
+
+```javascript
+test("DEMONSTRACAO - CI deve bloquear a PR", () => {
+    assert.equal(1, 1);
+});
+```
+
+O GitHub Actions executou os testes novamente,
+apresentando resultado positivo.
+
+### Evidência da correção
+
+![CI aprovado após a correção](evidencias/ci-corrigido.png)
+
+A Pull Request de demonstração foi encerrada sem merge,
+e a branch temporária foi excluída.
+
+Dessa forma, o teste artificial não foi integrado
+ao código oficial da aplicação.
+
+## 21. Relato do conflito de merge
+
+Durante a integração das contribuições da Mariana e da Bruna,
+ocorreram conflitos nos arquivos:
+
+- index.html
+- script.js
+
+A situação aconteceu porque ambas as funcionalidades
+modificavam trechos compartilhados da interface e do JavaScript.
+
+O Git identificou os conflitos durante a atualização
+do projeto e a recuperação das alterações locais.
+
+A equipe analisou os trechos conflitantes e ajustou o código,
+preservando o filtro desenvolvido pela Mariana e a ordenação
+desenvolvida pela Bruna.
+
+Após a resolução, foram executados os testes automatizados,
+e as alterações seguiram pelo fluxo de Pull Request.
+
+A experiência demonstrou a importância da comunicação,
+da integração de código e da revisão colaborativa.
+
+## 22. Docker Hub — Imagem da Etapa 03
+
+A versão final da aplicação foi conteinerizada utilizando
+Docker e Nginx.
+
+A imagem foi construída e testada localmente antes
+de ser publicada no Docker Hub da Mariana.
+
+Repositório Docker Hub:
+
+https://hub.docker.com/r/mahzali/garagem-digital
+
+Imagem publicada:
+
+`mahzali/garagem-digital:etapa3`
+
+### Executar a aplicação pelo Docker Hub
+
+```bash
+docker run --rm -p 8080:80 mahzali/garagem-digital:etapa3
+```
+
+Depois, acessar:
+
+http://localhost:8080
+
+O comando utiliza a imagem pública do Docker Hub
+e não exige variáveis de ambiente adicionais para iniciar
+o servidor web.
+
+Para utilizar favoritos, é necessário acesso à internet
+e aos serviços configurados do Firebase.
+
+### Construir a imagem localmente
+
+```bash
+docker build -t garagem-digital:etapa3 .
+```
+
+### Executar a imagem local
+
+```bash
+docker run --rm -p 8080:80 garagem-digital:etapa3
+```
+
+### Evidência do Docker Hub
+
+![Imagem publicada no Docker Hub](evidencias/docker-hub-etapa3.png)
+
+## 23. Conclusão da Etapa 03
+
+A equipe implementou novas funcionalidades, testes automatizados,
+integração contínua e um processo de desenvolvimento colaborativo.
+
+Cada integrante contribuiu com código em uma branch própria,
+submetendo alterações por Pull Request.
+
+A configuração do GitHub Actions permitiu validar as mudanças
+automaticamente, enquanto a proteção da main impediu a integração
+de uma alteração com teste falhando.
+
+O projeto também proporcionou experiência prática com
+resolução de conflitos, revisão de código e publicação
+de imagens Docker.
+
+A versão final da Garagem Digital encontra-se disponível
+no GitHub e no Docker Hub.
