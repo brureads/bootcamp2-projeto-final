@@ -88,3 +88,7 @@ test("pesquisa favoritos por modelo ignorando acento", () => {
         1
     );
 });
+
+test("DEMONSTRACAO - CI deve bloquear a PR", () => {
+    assert.equal(1, 2);
+});
