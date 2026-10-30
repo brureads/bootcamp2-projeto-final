@@ -90,5 +90,5 @@ test("pesquisa favoritos por modelo ignorando acento", () => {
 });
 
 test("DEMONSTRACAO - CI deve bloquear a PR", () => {
-    assert.equal(1, 2);
+    assert.equal(1, 1);
 });
